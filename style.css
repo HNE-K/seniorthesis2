@@ -1,0 +1,118 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+section {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+#BG {
+    display: inline-block; /* necessary to make body the same dimensions as #BG_img. Use Inspect to check their dimensions. */
+    height: 180vh;
+    position: absolute; /* pushes BG_img into the background */
+    /* background-image: url("images/Senior_Thesis_Map_Spring.png");
+    background-position: top left;
+    background-origin: border-box;
+    background-attachment: scroll;
+    background-size: 75%; */
+}
+
+#BG_img {
+    height: 100%; /* % of its container, #BG */
+}
+
+#leaves_container, #leaves_canvas, #snow_canvas {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+/* section #fixed_stuff {
+    display: flex;
+} */
+
+#title {
+    position: absolute; /* lets this div overlap with sections */
+    line-height: 0em; /* line-height = leading */
+}
+
+#open_instructions {
+    position: fixed;
+    right: 2%; /* % of its container, #fixed_stuff */
+    top: 2%;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1em;
+}
+
+#instructions {
+    position: fixed;
+    display: block;
+    /* aspect-ratio: 1/1; square */
+    padding: 20px;
+    border-radius: 25px;
+    background-color:aliceblue;
+    /* background-position: left top; */
+    /* background-size: cover; */
+    height: 40%; /* must be a set height to control the inner div's overflow */
+    min-width: 40%;
+    top: 20%;
+    left: 20%;
+    right: 20%;
+    /* BORDERS https://www.w3schools.com/cssref/tryit.php?filename=trycss3_border-image-repeat */
+}
+
+#instructions div {
+    height: 100%;
+    overflow: auto; /* makes overflow generate a scroll bar */
+}
+
+.close-button {
+    position: absolute; /*takes the button out of #instructions's padding*/
+    float: right;
+    top: 0;
+    right: 0;
+}
+
+#instructions h3, #instructions p {
+    text-align: center;
+    margin: 0;
+}
+
+#slider {
+    appearance: none; /* remove default appearance */
+    position: fixed;
+    bottom: 10%;
+    left: 15%;
+    width: 70%;
+    height: 3%;
+    border-radius: 5px;
+    opacity: 0.7;
+    outline: none;
+    background-color: white;
+}
+
+#slider::-webkit-slider-thumb {
+    appearance: none; /* default appearance overrides my settings for some reason */
+    background-color: black;
+    aspect-ratio: 1/1;
+    height: 150%;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* slider knob for Firefox */
+#slider::-moz-range-thumb {
+    appearance: none; /* default appearance overrides my settings for some reason */
+    background-color: black;
+    aspect-ratio: 1/1; /* doesn't work in Firefox?? */
+    height: 150%;
+    border-radius: 50%;
+    cursor: pointer;
+}
