@@ -217,11 +217,15 @@ button {
     left: 32%;
 }
 
+#art2 {
+    top: 70%;
+    left: 20%;
+}
+
 .preview {
     display: inline-block;
+    visibility: hidden;
     position: absolute;
-    top: 30%;
-    left: 34%;
     padding: 0.5em;
     border-radius: 1em;
     background-color:aliceblue;
@@ -232,6 +236,16 @@ button {
 
 .preview div {
     overflow: auto;
+}
+
+#art1Preview {
+    top: 30%;
+    left: 34%;
+}
+
+#art2Preview {
+    top: 70%;
+    left: 22%;
 }
 
 .artlink {
@@ -260,11 +274,10 @@ button {
     left: 3%;
     height: 12%;
     width: auto;
-    filter: drop-shadow(0 1rem 0.25rem, rgb(100,100,100));
+    filter: drop-shadow(0 0 0.25rem rgb(100, 100, 100));
 }
 
 #unicorn img {
     height: 100%;
-    filter: drop-shadow(0 1rem 0.25rem, rgb(100,100,100));
     display: none;
 }

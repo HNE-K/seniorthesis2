@@ -100,12 +100,26 @@ function updatePos(event) {
             break;
     }
     // artwork previews
-    // var art1Preview = document.getElementById("art1Preview");
-    // if (left_coord - art1.offsetLeft >= -60 && left_coord - art1.offsetLeft <= 0 && top_coord - art1.offsetTop >= -60 && top_coord - art1.offsetTop <= 0) {
-    //     art1Preview.style.visibility = "visible";
-    // } else {
-    //     art1Preview.style.visibility = "hidden";
-    // }
+    var art1_rect = art1.getBoundingClientRect();
+    var art1_left = art1_rect.left + document.body.scrollLeft; // bc svg don't support .offsetLeft, estimation of .offsetLeft = art1's left-wise coordinate relative to the viewport + how much the page is scrolled horizontally (the part that's not visible when you've scrolled)
+    var art1_top = art1_rect.top + document.body.scrollTop;
+    var art1Preview = document.getElementById("art1Preview");
+    if (left_coord - art1_left >= -60 && left_coord - art1_left <= 0 && top_coord - art1_top >= -60 && top_coord - art1_top <= 0) {
+        art1Preview.style.visibility = "visible";
+    } else {
+        art1Preview.style.visibility = "hidden";
+    }
+
+    var art2_rect = art2.getBoundingClientRect();
+    var art2_left = art2_rect.left + document.body.scrollLeft; // estimation of offsetLeft = art1's left-wise coordinate relative to the viewport (can see) + how much the page is scrolled horizontally (not visible when you've scrolled)
+    var art2_top = art2_rect.top + document.body.scrollTop;
+    var art2Preview = document.getElementById("art2Preview");
+    if (left_coord - art2_left >= -60 && left_coord - art2_left <= 0 && top_coord - art2_top >= -60 && top_coord - art2_top <= 0) {
+        art2Preview.style.visibility = "visible";
+    } else {
+        art2Preview.style.visibility = "hidden";
+    }
+
 }
 
 // Runs everything upon the webpage loading
@@ -114,10 +128,10 @@ function init() {
     unicorn = document.getElementById("unicorn");
     facingRight = true;
     art1 = document.getElementById("art1");
-    // art2 = document.getElementById("art2");
-    // art3 = document.getElementById("art3");
+    art2 = document.getElementById("art2");
+    art3 = document.getElementById("art3");
     document.onkeydown = startMove;
-    document.onkeydown = moving;
+    document.onkeydown = moving; // similar to AddEventListener. Every time a key is pressed, run moving()...
     document.onkeypress = moving; // in case browser supports .onkeypress instead of .onkeydown
     // UNICORN ANIMATION
     const frames = document.getElementById("unicorn").children;
@@ -460,3 +474,11 @@ function init() {
 }
 
 window.onload = init; // need this line to actually run all this code.
+
+// senses when user is not clicking the running buttons bc doing so turns isMoving into true
+// keyup means when any button is released, but isMoving limits to AWSD.
+document.addEventListener('keyup', (event) => {
+    if (isMoving) {
+        isMoving = false;
+    }
+});
