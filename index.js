@@ -45,19 +45,20 @@ function updatePos(event) {
         pressed_key = event.which;
     }
     var BG_section = document.getElementById("BG");
+    var rect = unicorn.getBoundingClientRect(); // DIFFERENT THAN offsetLeft! .left of this is the left coordinate calculated from the current view "relative" not whole webpage "absolute"
     switch (pressed_key) {
         case 65: // 37 is left arrow, 65 is A
             isMoving = true;
-            if (left_coord < 60) {
+            if (left_coord < 0) {
                 break; // don't go off-screen. Test the number in the condition! It depends on unicorn's size.
             }
             if (facingRight) {
-                unicorn.style.transform = "scaleX(-1)"; // flip
+                unicorn.style.transform = "scaleX(1)"; // flip
                 facingRight = false;
             }
             // gap between left edge of unicorn and BG_section's left is less than 20%
-            if ((left_coord - BG_section.scrollLeft)/BG_section.scrollLeft < 0.2) {
-                BG_section.scrollBy(-speed, 0);
+            if (rect.left / window.innerWidth < 0.1) {
+                window.scrollBy(-speed, 0);
             }
             left_coord -= speed;
             break;
@@ -66,32 +67,32 @@ function updatePos(event) {
             if (top_coord < 0) {
                 break;
             }
-            if ((top_coord - BG_section.scrollTop)/BG_section.scrollTop < 0.2) {
-                BG_section.scrollBy(0, -speed);
+            if (rect.top / window.innerHeight < 0.1) {
+                window.scrollBy(0, -speed);
             }
             top_coord -= speed;
             break;
         case 68: // 39 is right arrow, 68 is D
             isMoving = true;
-            if (left_coord > 3950) {
+            if (left_coord > BG_section.clientWidth - unicorn.clientWidth) { // unicorn's top left corner cannot be same as the right edge
                 break;
             }
             if (!facingRight) {
-                unicorn.style.transform = "scaleX(1)"; // flip again
+                unicorn.style.transform = "scaleX(-1)"; // flip, opposite to scaleX(-1)
                 facingRight = true;
             }
-            if ((left_coord - BG_section.scrollLeft)/BG_section.scrollLeft > 0.8) {
-                BG_section.scrollBy(speed, 0);
+            if (rect.left / window.innerWidth > 0.8) {
+                window.scrollBy(speed, 0);
             }
             left_coord += speed;
             break;
         case 83: // 40 is down arrow, 83 is S
             isMoving = true;
-            if (top_coord > 1600) {
+            if (top_coord > BG_section.clientHeight - unicorn.clientHeight) { // unicorn's top left corner cannot be same as the bottom edge
                 break;
             }
-            if ((top_coord - BG_section.scrollTop)/BG_section.scrollTop > 0.8) {
-                BG_section.scrollBy(0, speed);
+            if (rect.top / window.innerHeight > 0.6) {
+                window.scrollBy(0, speed);
             }
             top_coord += speed;
             break;
@@ -127,7 +128,7 @@ function init() {
     setInterval(function () { 
         if (isMoving) { // there are 15 frames for running rn
             // deactivate other sets of frames
-            frames[i % 4 + 15].style.display = "none";
+            frames[i % 10 + 15].style.display = "none";
             // activate the running frames
             frames[i % 15].style.display = "none";
             frames[++i % 15].style.display = "inline-block";

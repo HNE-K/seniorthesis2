@@ -266,4 +266,5 @@ button {
 #unicorn img {
     height: 100%;
     filter: drop-shadow(0 1rem 0.25rem, rgb(100,100,100));
+    display: none;
 }
