@@ -12,6 +12,16 @@ var speed = 8;
 var art1 = null;
 var art2 = null;
 var art3 = null;
+// preview window trackers
+var art1Preview = null;
+var art2Preview = null;
+var art3Preview = null;
+var art4Preview = null;
+// preview window's button/link text trackers
+var art1Link = null;
+var art2Link = null;
+var art3Link = null;
+var art4Link = null;
 
 // Unicorn functions
 // get initial position
@@ -45,7 +55,7 @@ function updatePos(event) {
         pressed_key = event.which;
     }
     var BG_section = document.getElementById("BG");
-    var rect = unicorn.getBoundingClientRect(); // DIFFERENT THAN offsetLeft! .left of this is the left coordinate calculated from the current view "relative" not whole webpage "absolute"
+    var unicorn_rect = unicorn.getBoundingClientRect(); // DIFFERENT THAN offsetLeft! .left of this is the left coordinate calculated from the current view "relative" not whole webpage "absolute"
     switch (pressed_key) {
         case 65: // 37 is left arrow, 65 is A
             isMoving = true;
@@ -57,7 +67,7 @@ function updatePos(event) {
                 facingRight = false;
             }
             // gap between left edge of unicorn and BG_section's left is less than 20%
-            if (rect.left / window.innerWidth < 0.1) {
+            if (unicorn_rect.left / window.innerWidth < 0.1) {
                 window.scrollBy(-speed, 0);
             }
             left_coord -= speed;
@@ -67,7 +77,7 @@ function updatePos(event) {
             if (top_coord < 0) {
                 break;
             }
-            if (rect.top / window.innerHeight < 0.1) {
+            if (unicorn_rect.top / window.innerHeight < 0.1) {
                 window.scrollBy(0, -speed);
             }
             top_coord -= speed;
@@ -81,7 +91,7 @@ function updatePos(event) {
                 unicorn.style.transform = "scaleX(-1)"; // flip, opposite to scaleX(-1)
                 facingRight = true;
             }
-            if (rect.left / window.innerWidth > 0.8) {
+            if (unicorn_rect.left / window.innerWidth > 0.8) {
                 window.scrollBy(speed, 0);
             }
             left_coord += speed;
@@ -91,7 +101,7 @@ function updatePos(event) {
             if (top_coord > BG_section.clientHeight - unicorn.clientHeight) { // unicorn's top left corner cannot be same as the bottom edge
                 break;
             }
-            if (rect.top / window.innerHeight > 0.6) {
+            if (unicorn_rect.top / window.innerHeight > 0.6) {
                 window.scrollBy(0, speed);
             }
             top_coord += speed;
@@ -99,13 +109,13 @@ function updatePos(event) {
         default:
             break;
     }
-    // artwork previews
+    // artwork previews. If using percentages to check whether the unicorn is near the dot, tune each artpreview individually bc percentages expand the further down/right the dot is.
     var art1_rect = art1.getBoundingClientRect();
     var art1_left = art1_rect.left + document.body.scrollLeft; // bc svg don't support .offsetLeft, estimation of .offsetLeft = art1's left-wise coordinate relative to the viewport + how much the page is scrolled horizontally (the part that's not visible when you've scrolled)
     var art1_top = art1_rect.top + document.body.scrollTop;
-    var art1Preview = document.getElementById("art1Preview");
-    if (left_coord - art1_left >= -60 && left_coord - art1_left <= 0 && top_coord - art1_top >= -60 && top_coord - art1_top <= 0) {
+    if ((left_coord - art1_left)/art1_left >= -0.18 && (left_coord - art1_left)/art1_left < 0.1 && (top_coord - art1_top)/art1_top >= -0.4 && (top_coord - art1_top)/art1_top < 0.2) {
         art1Preview.style.visibility = "visible";
+        console.log("visible");
     } else {
         art1Preview.style.visibility = "hidden";
     }
@@ -113,13 +123,83 @@ function updatePos(event) {
     var art2_rect = art2.getBoundingClientRect();
     var art2_left = art2_rect.left + document.body.scrollLeft; // estimation of offsetLeft = art1's left-wise coordinate relative to the viewport (can see) + how much the page is scrolled horizontally (not visible when you've scrolled)
     var art2_top = art2_rect.top + document.body.scrollTop;
-    var art2Preview = document.getElementById("art2Preview");
-    if (left_coord - art2_left >= -60 && left_coord - art2_left <= 0 && top_coord - art2_top >= -60 && top_coord - art2_top <= 0) {
+    // if (left_coord - art2_left >= -60 && left_coord - art2_left <= 0 && top_coord - art2_top >= -60 && top_coord - art2_top <= 0) {
+    if ((left_coord - art2_left)/art2_left >= -1.5 && (left_coord - art2_left)/art2_left < 0.6 && (top_coord - art2_top)/art2_top >= -0.3 && (top_coord - art2_top)/art2_top < 0.1) {
         art2Preview.style.visibility = "visible";
     } else {
         art2Preview.style.visibility = "hidden";
     }
 
+    var art3_rect = art3.getBoundingClientRect();
+    var art3_left = art3_rect.left + document.body.scrollLeft; // estimation of offsetLeft = art1's left-wise coordinate relative to the viewport (can see) + how much the page is scrolled horizontally (not visible when you've scrolled)
+    var art3_top = art3_rect.top + document.body.scrollTop;
+    if ((left_coord - art3_left)/art3_left >= -0.15 && (left_coord - art3_left)/art3_left < 0.05 && (top_coord - art3_top)/art3_top >= -0.2 && (top_coord - art3_top)/art3_top < 0.2) {
+        art3Preview.style.visibility = "visible";
+    } else {
+        art3Preview.style.visibility = "hidden";
+    }
+
+    var art4_rect = art4.getBoundingClientRect();
+    var art4_left = art4_rect.left + document.body.scrollLeft; // estimation of offsetLeft = art1's left-wise coordinate relative to the viewport (can see) + how much the page is scrolled horizontally (not visible when you've scrolled)
+    var art4_top = art4_rect.top + document.body.scrollTop;
+    if ((left_coord - art4_left)/art4_left >= -0.14 && (left_coord - art4_left)/art4_left < 0.08 && (top_coord - art4_top)/art4_top >= -0.4 && (top_coord - art4_top)/art4_top < 0.2) {
+        art4Preview.style.visibility = "visible";
+    } else {
+        art4Preview.style.visibility = "hidden";
+    }
+
+}
+
+function sliderChecker() {
+    if (slider.value >= 1 && slider.value <= 25) {
+        currentSeason = "spring";
+        BG_img.src = "images/Senior_Thesis_Map_Spring.png";
+        art1Link.innerHTML = "Mt. Creativity";
+        art2Link.innerHTML = "The First Fairy's Shrine";
+        art3Link.innerHTML = "Forest of Guardians";
+        art4Link.innerHTML = "Passage to Paradise";
+    }
+    if (slider.value >= 26 && slider.value <= 50) {
+        currentSeason = "summer";
+        BG_img.src = "images/Senior_Thesis_Map_Summer.png";
+        // leaves_container.style.display = "none";
+        // leaves_canvas.style.display = "none";
+        art1Link.innerHTML = "Magmanimous Dragon's Soup Kitchen";
+        art2Link.innerHTML = "Toasty Refuge";
+        art3Link.innerHTML = "Charcoal Woods";
+        art4Link.innerHTML = "Cliff Dragon's Diving Board";
+    }
+    if (slider.value >= 51 && slider.value <= 75) {
+        // initial batch of leaves
+        // purpose: natural initial position. Looks better than without (straight line eww) but still a huge and separated batch is not ideal
+        // if (currentSeason != "autumn") {
+        //     var leaves = document.querySelectorAll(".leaf");
+        //     for (var j = 0; j < leaves.length; j++) {
+        //         leaves[j].style.top = Math.random()*window.innerHeight + "px";
+        //         leaves[j].style.visibility = "hidden"; // just hide this batch. the subsequent leaves look natural enough.
+        //     }
+        // }
+        currentSeason = "autumn";
+        BG_img.src = "images/Senior_Thesis_Map_Autumn.png";
+        snow_canvas.style.display = "none";
+        // leaves_container.style.display = "block";
+        // leaves_canvas.style.display = "block";
+        art1Link.innerHTML = "Rebirth Recycling, Inc.";
+        art2Link.innerHTML = "Phoenix Airlines Landing Pad";
+        art3Link.innerHTML = "Goldenbell Woods";
+        art4Link.innerHTML = "Silverscissor Gates";
+    }
+    if (slider.value >= 76 && slider.value <= 100) {
+        currentSeason = "winter";
+        BG_img.src = "images/Senior_Thesis_Map_Winter.png";
+        // leaves_container.style.display = "none";
+        // leaves_canvas.style.display = "none";
+        snow_canvas.style.display = "inline-block";
+        art1Link.innerHTML = "Mt. Vein";
+        art2Link.innerHTML = "Snowfox Den";
+        art3Link.innerHTML = "Nightlight Forest";
+        art4Link.innerHTML = "Fortress Cliffs"
+    }
 }
 
 // Runs everything upon the webpage loading
@@ -130,6 +210,10 @@ function init() {
     art1 = document.getElementById("art1");
     art2 = document.getElementById("art2");
     art3 = document.getElementById("art3");
+    art1Preview = document.getElementById("art1Preview");
+    art2Preview = document.getElementById("art2Preview");
+    art3Preview = document.getElementById("art3Preview");
+    art4Preview = document.getElementById("art4Preview");
     document.onkeydown = startMove;
     document.onkeydown = moving; // similar to AddEventListener. Every time a key is pressed, run moving()...
     document.onkeypress = moving; // in case browser supports .onkeypress instead of .onkeydown
@@ -163,44 +247,13 @@ function init() {
     var snow_canvas = document.getElementById("snow_canvas");
     // var leaves_container = document.getElementById("leaves_container");
     // var leaves_canvas = document.getElementById("leaves_canvas");
-
-    // upon clicking/moving the slider, this function runs.
-    slider.oninput = function() {
-        if (slider.value >= 1 && slider.value <= 25) {
-            currentSeason = "spring";
-            BG_img.src = "images/Senior_Thesis_Map_Spring.png";
-        }
-        if (slider.value >= 26 && slider.value <= 50) {
-            currentSeason = "summer";
-            BG_img.src = "images/Senior_Thesis_Map_Summer.png";
-            // leaves_container.style.display = "none";
-            // leaves_canvas.style.display = "none";
-        }
-        if (slider.value >= 51 && slider.value <= 75) {
-            // initial batch of leaves
-            // purpose: natural initial position. Looks better than without (straight line eww) but still a huge and separated batch is not ideal
-            // if (currentSeason != "autumn") {
-            //     var leaves = document.querySelectorAll(".leaf");
-            //     for (var j = 0; j < leaves.length; j++) {
-            //         leaves[j].style.top = Math.random()*window.innerHeight + "px";
-            //         leaves[j].style.visibility = "hidden"; // just hide this batch. the subsequent leaves look natural enough.
-            //     }
-            // }
-            currentSeason = "autumn";
-            BG_img.src = "images/Senior_Thesis_Map_Autumn.png";
-            snow_canvas.style.display = "none";
-            // leaves_container.style.display = "block";
-            // leaves_canvas.style.display = "block";
-        }
-        if (slider.value >= 76 && slider.value <= 100) {
-            currentSeason = "winter";
-            BG_img.src = "images/Senior_Thesis_Map_Winter.png";
-            // leaves_container.style.display = "none";
-            // leaves_canvas.style.display = "none";
-            snow_canvas.style.display = "inline-block";
-        }
-    };
-    slider.value = 1; // reset slider knob upon reloading webpage
+    art1Link = document.getElementById("art1Link");
+    art2Link = document.getElementById("art2Link");
+    art3Link = document.getElementById("art3Link");
+    art4Link = document.getElementById("art4Link");
+    sliderChecker(); // run once to initialize
+    slider.oninput = sliderChecker; // run again upon moving the slider
+    // slider.value = 1; // reset slider knob upon reloading webpage
 
     // WINTER SNOW ANIMATION
     // firstly set up by getting canvas and context
@@ -237,7 +290,7 @@ function init() {
                     opacity: Math.random(),
                     speedX: random(-11, 11),
                     speedY: random(7, 15),
-                    radius: random(0.5, 4.2),
+                    radius: random(0.5, 2.2),
                 }
             )
         }

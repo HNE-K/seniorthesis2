@@ -56,6 +56,8 @@ section {
 #title {
     position: absolute; /* lets this div overlap with sections */
     line-height: 0em; /* line-height = leading */
+    margin-inline: 1em; /* left and right */
+    filter: drop-shadow(0 0 0.25rem rgb(255, 217, 0));
 }
 
 button {
@@ -91,12 +93,12 @@ button {
 #instructions {
     position: fixed;
     display: block;
-    padding: 20px;
+    padding: 2em;
     border-radius: 25px;
     background-color:aliceblue;
     /* background-position: left top; */
     /* background-size: cover; */
-    height: 40%; /* must be a set height to control the inner div's overflow */
+    height: 45%; /* must be a set height to control the inner div's overflow */
     min-width: 40%;
     top: 20%;
     left: 20%;
@@ -112,6 +114,44 @@ button {
 #instructions div {
     height: 100%;
     overflow: auto; /* makes overflow generate a scroll bar */
+    text-align: center;
+}
+
+@font-face {
+    font-family: "Laila-Bold";
+    src: url("fonts/Laila/Laila-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Laila-SemiBold";
+    src: url("fonts/Laila/Laila-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: "Laila";
+    src: url("fonts/Laila/Laila-Medium.ttf");
+}
+
+h1 {
+    font-family: Laila-Bold;
+    font-style: normal;
+    font-size: 24pt;
+}
+
+#instructions div h2 {
+    margin: 0;
+    margin-bottom: 0.5em;
+    font-family: Laila-SemiBold;
+    font-style: normal;
+    font-size: 20pt;
+}
+
+#instructions div p {
+    margin: 0;
+    font-family: Laila;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 12pt;
 }
 
 .close-button {
@@ -129,11 +169,6 @@ button {
 
 .close-button #X_Button {
     height: 100%;
-}
-
-#instructions h3, #instructions p {
-    text-align: center;
-    margin: 0;
 }
 
 #slider {
@@ -218,8 +253,18 @@ button {
 }
 
 #art2 {
-    top: 70%;
-    left: 20%;
+    top: 50%;
+    left: 5%;
+}
+
+#art3 {
+    top: 80%;
+    left: 44%;
+}
+
+#art4 {
+    top: 37%;
+    left: 54%;
 }
 
 .preview {
@@ -228,43 +273,62 @@ button {
     position: absolute;
     padding: 0.5em;
     border-radius: 1em;
-    background-color:aliceblue;
-    max-width: 15%;
+    background-color: black;
+    max-width: 15%; /* stays there upon reaching max-width even if text wraps down leaving a gap */
     max-height: 30%;
+    /* min-width: 4%; */
+    min-height: min-content;
+    /* width: 10%; */
     font-size: 1em;
-}
+} 
 
-.preview div {
-    overflow: auto;
-}
-
+/*positions are the corresponding dot's same top but left +2 */
 #art1Preview {
     top: 30%;
     left: 34%;
 }
 
 #art2Preview {
-    top: 70%;
-    left: 22%;
+    top: 50%;
+    left: 7%
+}
+
+#art3Preview {
+    top: 80%;
+    left: 46%;
+}
+
+#art4Preview {
+    top: 37%;
+    left: 56%;
+}
+
+.preview div {
+    overflow: auto;
+    display: none;
 }
 
 .artlink {
+    color: white;
     background-color: black;
-	color: white;
-	border: none;
+	/* border: none;
     border-radius: 1em;
 	padding: 0.5em;
-    margin: 0.5em;
+    margin: 0.5em; */
 	cursor: pointer;
+    font-family: Laila;
+    font-size: 10pt;
+    text-decoration: underline;
 }
 
 .artlink:hover {
-    background-color: white;
+    /* background-color: white;
 	color: black;
     outline-offset: -2px;
     outline-style: solid;
     outline-width: 2px;
-    outline-color: black;
+    outline-color: black; */
+    text-decoration: none;
 }
 
 #unicorn {
