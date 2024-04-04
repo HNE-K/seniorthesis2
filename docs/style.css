@@ -172,6 +172,7 @@ h1 {
 
 #slider {
     z-index: 2;
+    -webkit-appearance: none;
     appearance: none; /* remove default appearance */
     position: fixed;
     bottom: 10%;
@@ -199,24 +200,38 @@ h1 {
 }
 
 #slider::-webkit-slider-thumb {
-    appearance: none; /* default appearance overrides my settings for some reason */
-    background-color: black;
+    -webkit-appearance: none;
+    appearance: none; 
+    background-image: url(images/Slider_Knob.png);
+    background-size: cover;
+    background-color: none;
+    filter: drop-shadow(0 0 0.25rem rgb(255, 217, 0));
     aspect-ratio: 1/1;
-    height: 150%;
+    height: 170%;
     width: auto;
-    border-radius: 1em;
+    border-radius: 50%;
+    border: none;
+    outline: none;
     cursor: pointer;
+    transform: rotateZ(var(--thumb-rotate, 0deg));
 }
 
 /* slider knob for Firefox */
 #slider::-moz-range-thumb {
-    appearance: none; /* default appearance overrides my settings for some reason */
-    background-color: black;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url(images/Slider_Knob.png);
+    background-size: cover;
+    background-color: none;
+    filter: drop-shadow(0 0 0.25rem rgb(255, 217, 0));
     aspect-ratio: 1/1; /* doesn't work in Firefox?? */
-    height: 150%;
+    height: 170%;
     width: auto;
-    border-radius: 1em;
+    border-radius: 50%;
+    border: none;
+    outline: none;
     cursor: pointer;
+    transform: rotateZ(var(--thumb-rotate, 0deg));
 }
 
 .dot {

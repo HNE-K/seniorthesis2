@@ -243,6 +243,9 @@ function init() {
 
     // CHANGING SEASONS
     slider = document.getElementById("slider");
+    slider.addEventListener("input", (event) => {
+        slider.style.setProperty("--thumb-rotate", `${(event.target.value/100) * 2160}deg`);
+    });
     var BG_img = document.getElementById("BG_img");
     var snow_canvas = document.getElementById("snow_canvas");
     // var leaves_container = document.getElementById("leaves_container");
