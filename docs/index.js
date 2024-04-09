@@ -2,6 +2,7 @@
 var slider = null;
 var currentSeason = "spring";
 // Unicorn trackers
+var BG_section = null;
 var unicorn = null;
 var facingRight = null;
 var left_coord = 0;
@@ -54,7 +55,7 @@ function updatePos(event) {
     else if (event.which) {
         pressed_key = event.which;
     }
-    var BG_section = document.getElementById("BG");
+    BG_section = document.getElementById("BG");
     var unicorn_rect = unicorn.getBoundingClientRect(); // DIFFERENT THAN offsetLeft! .left of this is the left coordinate calculated from the current view "relative" not whole webpage "absolute"
     switch (pressed_key) {
         case 65: // 37 is left arrow, 65 is A
@@ -115,7 +116,6 @@ function updatePos(event) {
     var art1_top = art1_rect.top + document.body.scrollTop;
     if ((left_coord - art1_left)/art1_left >= -0.18 && (left_coord - art1_left)/art1_left < 0.1 && (top_coord - art1_top)/art1_top >= -0.4 && (top_coord - art1_top)/art1_top < 0.2) {
         art1Preview.style.visibility = "visible";
-        console.log("visible");
     } else {
         art1Preview.style.visibility = "hidden";
     }
@@ -219,24 +219,57 @@ function init() {
     document.onkeypress = moving; // in case browser supports .onkeypress instead of .onkeydown
     // UNICORN ANIMATION
     const frames = document.getElementById("unicorn").children;
-    const frameCount = frames.length;
+    var BG_section = document.getElementById("BG");
     let i = 0; // frame number
     isMoving = false;
     // loop through the frame's numbers. setInterval means do this stuff on loop every 100 ms = 0.1 s
-    setInterval(function () { 
-        if (isMoving) { // there are 8 frames for running rn
-            // deactivate other sets of frames
+    setInterval(function () {
+        // if swimming, no need to care about isMoving
+        if ( // 1st box: left half of ocean
+            (left_coord < 0.09*BG_section.clientWidth && top_coord < 0.15*BG_section.clientHeight && top_coord > 0.03*BG_section.clientHeight)
+            || // 2nd box: right half of ocean before mountain
+            (left_coord > 0.09*BG_section.clientWidth && left_coord < 0.22*BG_section.clientWidth && top_coord < 0.2*BG_section.clientHeight && top_coord > 0.03*BG_section.clientHeight)
+            || // 3rd box: corner next to mountaintop
+            (left_coord > 0.22*BG_section.clientWidth && left_coord < 0.25*BG_section.clientWidth && top_coord < 0.1*BG_section.clientHeight && top_coord > 0.03*BG_section.clientHeight)
+            || // 4th box: fjord entrance
+            (left_coord > 0.38*BG_section.clientWidth && left_coord < 0.47*BG_section.clientWidth && top_coord < 0.25*BG_section.clientHeight && top_coord > 0.15*BG_section.clientHeight)
+            || // 5th box: fjord middle
+            (left_coord > 0.41*BG_section.clientWidth && left_coord < 0.49*BG_section.clientWidth && top_coord < 0.33*BG_section.clientHeight && top_coord >= 0.25*BG_section.clientHeight)
+            || // 6th box: fjord middle bend
+            (left_coord > 0.44*BG_section.clientWidth && left_coord < 0.49*BG_section.clientWidth && top_coord < 0.45*BG_section.clientHeight && top_coord >= 0.33*BG_section.clientHeight)
+            || // 7th box: fjord fork
+            (left_coord > 0.41*BG_section.clientWidth && left_coord < 0.45*BG_section.clientWidth && top_coord < 0.55*BG_section.clientHeight && top_coord >= 0.45*BG_section.clientHeight)
+            || // 8th box: flow from mountain into fjord
+            (left_coord > 0.3*BG_section.clientWidth && left_coord <= 0.41*BG_section.clientWidth && top_coord < 0.55*BG_section.clientHeight && top_coord >= 0.48*BG_section.clientHeight)
+            || // 9th box: crater lake
+            (left_coord > 0.69*BG_section.clientWidth && left_coord < 0.8*BG_section.clientWidth && top_coord < 0.78*BG_section.clientHeight && top_coord > 0.55*BG_section.clientHeight)
+        ) { // there are 9 frames for swimming rn
+            // deactivate running and standing frames. For some reason computation is faster if deactivate them separately. Don't do % 18.
+            frames[i % 8].style.display = "none";
             frames[8 + i % 10].style.display = "none";
-            // activate the running frames. ++i returns the value after incrementing i, opposite of i++.
-            frames[i % 8].style.display = "none";
-            frames[++i % 8].style.display = "inline-block";
+            // activate swimming frames
+            frames[i % 7 + 18].style.display = "none";
+            frames[++i % 7 + 18].style.display = "inline-block";
         }
-        else { // there are 10 frames for standing rn
-            // deactivate the running frames
-            frames[i % 8].style.display = "none";
-            // activate the standing frames
-            frames[i % 10 + 8].style.display = "none";
-            frames[++i % 10 + 8].style.display = "inline-block";
+        // if not swimming, need to differentiate between running and standing
+        else {
+            if (isMoving) { // there are 8 frames for running rn
+                // deactivate standing and swimming frames
+                frames[8 + i % 10].style.display = "none";
+                frames[18 + i % 7].style.display = "none";
+                // deactivate running frames first so that only one frame activates at a time
+                frames[i % 8].style.display = "none";
+                // activate the running frame. ++i returns the value after incrementing i, opposite of i++.
+                frames[++i % 8].style.display = "inline-block";
+            }
+            else { // there are 10 frames for standing rn
+                // deactivate the running and swimming frames
+                frames[i % 8].style.display = "none";
+                frames[18 + i % 7].style.display = "none";
+                // activate the standing frames
+                frames[i % 10 + 8].style.display = "none";
+                frames[++i % 10 + 8].style.display = "inline-block";
+            }
         }
     }, 100);
 
