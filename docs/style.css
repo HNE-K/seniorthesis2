@@ -347,7 +347,7 @@ h1 {
     margin: 0.5em; */
 	cursor: url("images/Mouse_Pointer.png"), pointer;
     font-family: Laila;
-    font-size: 10pt;
+    font-size: clamp(12pt, 3vh, 24pt);
     text-decoration: underline;
 }
 
